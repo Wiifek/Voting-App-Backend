@@ -22,4 +22,7 @@ router.get("/show-created-polls/:uid", passport.authenticate('bearer', { session
 //cancel vote
 router.delete("/cancel-vote/:uid/:pollId", passport.authenticate('bearer', { session: false }), uc.cancelVote)
 
+//vote
+router.post("/vote-poll/:uid/:pollId", passport.authenticate('bearer', { session: false }), uc.votePoll)
+
 module.exports = router
