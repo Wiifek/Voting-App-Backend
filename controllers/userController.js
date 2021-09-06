@@ -132,7 +132,6 @@ exports.votePoll = async (req, res) => {
             else{
                 await PollSchema.findByIdAndUpdate(id, {"options.votes":"No"}, {$inc:{ "options.$.votes": 1 } }, { new: true });
             }
-            res.json(userWithPolls.pollsTopics)
         }
     }
     catch (err) {
