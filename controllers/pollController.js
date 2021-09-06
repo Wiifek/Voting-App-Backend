@@ -17,9 +17,8 @@ exports.getAllPolls = async (req, res) => {
 exports.addPoll = async(req,res)=>{
     try {
         const pollData = req.body;
-        const uid = req.params.uid;
         const createdPoll = await PollSchema.create(pollData);
-        await UserSchema.findByIdAndUpdate(uid, { $push: { pollsTopics: createdPoll._id } }, { new: true });
+        await UserSchema.findByIdAndUpdate(pollData.user, { $push: { pollsTopics: createdPoll._id } }, { new: true });
         res.json(createdPoll);
     }
     catch (err) {

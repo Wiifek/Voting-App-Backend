@@ -8,7 +8,7 @@ const passport = require('passport')
 router.get("/", passport.authenticate('bearer', { session: false }), pc.getAllPolls)
 
 //Add poll
-router.post("/addPoll/:uid",passport.authenticate('bearer', { session: false }), pc.addPoll)
+router.post("/add-poll",passport.authenticate('bearer', { session: false }), pc.addPoll)
 
 //Get poll by id
 router.get("/:id", passport.authenticate('bearer', { session: false }), pc.getPollById)

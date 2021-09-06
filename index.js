@@ -1,12 +1,15 @@
 const express = require('express')
 const dotenv = require("dotenv");
 const app = express()
+const cors = require('cors')
 const port = 4000
 
 // body parser json 
 app.use(express.json())
 // dot env config
 dotenv.config();
+//Cors config
+app.use(cors());
 
 const connect = require('./database/dbConnection')
 const BearerStrategy = require('./passport/bearerStrategy')

@@ -13,7 +13,6 @@ const pollSchema = new Schema({
     title: { type: String },
     description: { type: String },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    question: String,
     options: [optionSchema],
     voted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     created: {
