@@ -8,7 +8,7 @@ exports.getAllUsers = async (req, res) => {
         res.json(users);
     } catch (err) {
         console.log(err)
-        res.status(500).json({message : "Internal server error!"});
+        res.status(500).json({ message: "Internal server error!" });
     }
 }
 
@@ -25,7 +25,7 @@ exports.getUserById = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(500).json({message : "Internal server error!"});
+        res.status(500).json({ message: "Internal server error!" });
     }
 }
 
@@ -44,7 +44,7 @@ exports.editUser = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(500).json({message : "Internal server error!"});
+        res.status(500).json({ message: "Internal server error!" });
     }
 }
 
@@ -63,7 +63,7 @@ exports.deleteUser = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(500).json({message : "Internal server error!"});
+        res.status(500).json({ message: "Internal server error!" });
     }
 }
 
@@ -86,7 +86,7 @@ exports.cancelVote = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(500).json({message : "Internal server error!"});
+        res.status(500).json({ message: "Internal server error!" });
     }
 }
 
@@ -106,7 +106,7 @@ exports.showUserCreatedPolls = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(500).json({message : "Internal server error!"});
+        res.status(500).json({ message: "Internal server error!" });
     }
 }
 
@@ -117,7 +117,8 @@ exports.votePoll = async (req, res) => {
         const uid = req.params.uid;
         const vote = req.body;
         const user = await UserSchema.findById(uid);
-        const poll = await PollSchema.findById(id)
+        const poll = await PollSchema.findById(id);
+        console.log(vote.vote)
 
         if (!user)
             res.json({ message: "Poll does not exist!" })
@@ -125,17 +126,18 @@ exports.votePoll = async (req, res) => {
             res.json({ message: "Poll does not exist!" })
         else {
             await UserSchema.findByIdAndUpdate(uid, { $push: { pollsVoted: id } }, { new: true });
-            await PollSchema.findByIdAndUpdate(id, { $push: { Voted: uid } }, { new: true });
-            if(vote == "Yes"){
-                await PollSchema.findByIdAndUpdate(id, {"options.votes":"Yes"}, {$inc:{ "options.$.votes": 1 } }, { new: true });
+            const updatedPoll = await PollSchema.findByIdAndUpdate(id, { $push: { voted: uid } }, { new: true });
+            if (vote.vote == "Yes") {
+                await PollSchema.findByIdAndUpdate(id, { "options.option" : 'Yes' , $inc: { "options.$.votes": 1 } }, { new: true });
             }
-            else{
-                await PollSchema.findByIdAndUpdate(id, {"options.votes":"No"}, {$inc:{ "options.$.votes": 1 } }, { new: true });
+            else {
+                await PollSchema.findByIdAndUpdate(id, { "options.option": "No" }, { $inc: { "options.$.votes": 1 } }, { new: true });
             }
+            res.json(updatedPoll)
         }
     }
     catch (err) {
         console.log(err)
-        res.status(500).json({message : "Internal server error!"});
+        res.status(500).json({ message: "Internal server error!" });
     }
 }

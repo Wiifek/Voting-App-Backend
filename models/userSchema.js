@@ -10,7 +10,8 @@ var userSchema = new Schema(
         address: { type: String },
         phone: { type: String },
         pollsTopics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Poll' }],
-        pollsVoted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Poll' }]
+        pollsVoted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Poll' }],
+        numberOfVotesPerDay: {type: Number, default: 0}
     }, {
     timestamps: true,
     versionKey: false

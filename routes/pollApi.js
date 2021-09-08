@@ -17,10 +17,10 @@ router.get("/:id", passport.authenticate('bearer', { session: false }), pc.getPo
 router.put("/edit-poll/:id", passport.authenticate('bearer', { session: false }), pc.editPoll)
 
 //Delete poll
-router.delete("/delete-poll/:pollIid", passport.authenticate('bearer', { session: false }), pc.deletePoll)
+router.delete("/delete-poll/:pollId", passport.authenticate('bearer', { session: false }), pc.deletePoll)
 
 //show poll voters
-router.get("/show-poll-voters/:pollId", passport.authenticate('bearer', { session: false },), pc.showPollVoters)
+router.get("/show-poll-voters/:pollId", passport.authenticate('bearer', { session: false }), pc.showPollVoters)
 
 
 module.exports = router

@@ -17,7 +17,7 @@ router.put("/edit-user/:uid", passport.authenticate('bearer', { session: false }
 router.delete("/delete-user/:uid", passport.authenticate('bearer', { session: false }), uc.deleteUser)
 
 //show created polls
-router.get("/show-created-polls/:uid", passport.authenticate('bearer', { session: false },), uc.showUserCreatedPolls)
+router.get("/show-created-polls/:uid", passport.authenticate('bearer', { session: false }), uc.showUserCreatedPolls)
 
 //cancel vote
 router.delete("/cancel-vote/:uid/:pollId", passport.authenticate('bearer', { session: false }), uc.cancelVote)

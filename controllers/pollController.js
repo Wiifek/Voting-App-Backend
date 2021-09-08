@@ -70,12 +70,12 @@ exports.deletePoll = async (req, res) => {
         const pollId = req.params.pollId;
         const poll = await PollSchema.findById(pollId);
 
-        if (!user)
+        if (!poll)
             res.json({ message: "This poll does not exist!" })
         else {
             await UserSchema.findByIdAndUpdate(poll.user.valueOf(), { $pull: { pollsTopics: poll._id } }, { new: true });
             await PollSchema.findByIdAndRemove(pollId);
-            res.json({ message: "Poll with id " + id + " has been deleted successfuly" })
+            res.json({ message: "Poll with id " + pollId + " has been deleted successfuly" })
         }
     }
     catch (err) {
