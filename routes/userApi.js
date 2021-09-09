@@ -25,4 +25,5 @@ router.delete("/cancel-vote/:uid/:pollId", passport.authenticate('bearer', { ses
 //vote
 router.post("/vote-poll/:uid/:pollId", passport.authenticate('bearer', { session: false }), uc.votePoll)
 
+
 module.exports = router

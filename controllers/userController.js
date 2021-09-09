@@ -118,20 +118,19 @@ exports.votePoll = async (req, res) => {
         const vote = req.body;
         const user = await UserSchema.findById(uid);
         const poll = await PollSchema.findById(id);
-        console.log(vote.vote)
 
         if (!user)
             res.json({ message: "Poll does not exist!" })
         else if (!poll)
             res.json({ message: "Poll does not exist!" })
         else {
-            await UserSchema.findByIdAndUpdate(uid, { $push: { pollsVoted: id } }, { new: true });
+            await UserSchema.findByIdAndUpdate(uid, { $push: { pollsVoted: id }, $inc: { numberOfVotesPerDay: 1 } }, { new: true });
             const updatedPoll = await PollSchema.findByIdAndUpdate(id, { $push: { voted: uid } }, { new: true });
             if (vote.vote == "Yes") {
-                await PollSchema.findByIdAndUpdate(id, { "options.option" : 'Yes' , $inc: { "options.$.votes": 1 } }, { new: true });
+                await PollSchema.findByIdAndUpdate(id, { $inc: { 'options.0.votes': 1 } }, { new: true });
             }
             else {
-                await PollSchema.findByIdAndUpdate(id, { "options.option": "No" }, { $inc: { "options.$.votes": 1 } }, { new: true });
+                await PollSchema.findByIdAndUpdate(id, { $inc: { "options.1.votes": 1 } }, { new: true });
             }
             res.json(updatedPoll)
         }
@@ -139,5 +138,17 @@ exports.votePoll = async (req, res) => {
     catch (err) {
         console.log(err)
         res.status(500).json({ message: "Internal server error!" });
+    }
+}
+
+
+//Restart counting votes every 24 hours
+exports.restartCounting = async (req, res) => {
+    try {
+        await UserSchema.updateMany({ $set: { numberOfVotesPerDay: 0 } })
+        console.log("Number of votes per day restarted")
+    }
+    catch (err) {
+        console.log("Internal server error!", err)
     }
 }
